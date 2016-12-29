@@ -8,7 +8,7 @@ public class SignIn_Action {
 		
 		// Option to  get values from Excel Sheet
 		String sUserName = "phongnguyen";
-		String sPassword = "Monday123";
+		String sPassword = "";
 		
 		LoginPages.iCatiStageUser(driver).sendKeys(sUserName);
 		LoginPages.iCatiStagePassword(driver).sendKeys(sPassword);
@@ -18,7 +18,7 @@ public class SignIn_Action {
 	
 	public static void OmniLogin(WebDriver driver) throws Exception {
 		String sUserName = "pnguyen";
-		String sPassword = "Tuesday1!";
+		String sPassword = "";
 		
 		LoginPages.omniUser(driver).sendKeys(sUserName);
 		LoginPages.omniPassword(driver).sendKeys(sPassword);
@@ -27,7 +27,7 @@ public class SignIn_Action {
 	
 	public static void hhcahpsLogin(WebDriver driver) throws Exception {
 		String sUserName = "pnguyen";
-		String sPassword = "Monday1!";
+		String sPassword = "";
 		
 		LoginPages.hhcahpUser(driver).sendKeys(sUserName);
 		LoginPages.hhcahpPassword(driver).sendKeys(sPassword);
@@ -36,7 +36,7 @@ public class SignIn_Action {
 		
 	public static void olrLogin (WebDriver driver) throws Exception{
 		String sUserName = "pnnguyen";
-		String sPassword = "Tuesday123";
+		String sPassword = "";
 		
 		LoginPages.olrUser(driver).sendKeys(sUserName);	
 		LoginPages.olrPassword(driver).sendKeys(sPassword);
@@ -45,7 +45,7 @@ public class SignIn_Action {
 	
 	public static void sapphireLogin(WebDriver driver) throws Exception{
 		String sUserName = "pnguyen";
-		String sPassword = "Monday123!";
+		String sPassword = "";
 		
 		LoginPages.saphUser(driver).sendKeys(sUserName);
 		LoginPages.saphPassword(driver).sendKeys(sPassword);
