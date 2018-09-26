@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
-using AventStack.ExtentReports;
-using AventStack.ExtentReports.Reporter;
+using RelevantCodes.ExtentReports;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -15,7 +14,7 @@ namespace DssSmokeTest.iCati_Tests
     class iCati_Management_SmokeTest
     {
         ExtentTest test;
-        ExtentReports extent;
+        ExtentReports report = new ExtentReports("C:\\Automation\\Reports\\icatiSmokeTest.html", true);
         IWebDriver driver;      
         iCatiActions icatiDo;
         WebDriverWait wait;
@@ -27,13 +26,10 @@ namespace DssSmokeTest.iCati_Tests
         {
             options = new InternetExplorerOptions { IgnoreZoomLevel = true, EnsureCleanSession = true
                 , IntroduceInstabilityByIgnoringProtectedModeSettings = true };
-            driver = new InternetExplorerDriver(@"C:\Automation\Projects", options);
+            driver = new InternetExplorerDriver(@"C:\Visual Studio 2015\Projects", options);
             icatiDo = new iCatiActions(driver);
             wait = new WebDriverWait(driver, new TimeSpan(150000000));
             action = new Actions(driver);
-            var htmlReporter = new ExtentHtmlReporter("C:\\Temp\\Test2test.html");
-            var extent = new ExtentReports();
-            extent.AttachReporter(htmlReporter);
         }
 
         //Management > user activity old
@@ -42,12 +38,12 @@ namespace DssSmokeTest.iCati_Tests
         public void old_user_activity()
         {
 
-            test = test.CreateNode("Management > User Activity Old");
+            test = report.StartTest("Management > User Activity Old");
             icatiDo.iCati_Login();
             icatiDo.Nav_UserActivity_Old();
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='tblMain']/tbody/tr[1]/th"))).Text;
             Assert.IsTrue(pageSource.Contains("Interviewer Status"), "User Activity(Old) Page not found");
-            test.Log(Status.Info, "User Activity (Old) Page found");
+            test.Log(LogStatus.Info, "User Activity (Old) Page found");
             driver.Close();
         }
 
@@ -56,12 +52,12 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void user_activity_New ()
         {
-            test = test.CreateNode("Management > User Activity New");
+            test = report.StartTest("Management > User Activity New");
             icatiDo.iCati_Login();
             icatiDo.Nav_UserActivity_New();
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='frmInput']/table/tbody/tr/th"))).Text;
             Assert.IsTrue(pageSource.Contains("Workstations"));
-            test.Log(Status.Info, "User Activity New Page found");
+            test.Log(LogStatus.Info, "User Activity New Page found");
             driver.Close();
         }
 
@@ -71,14 +67,14 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void callback_Tool()
         {
-            test = test.CreateNode("Management > Overnight Callbacks");        
+            test = report.StartTest("Management > Overnight Callbacks");        
             icatiDo.iCati_Login();         
             icatiDo.Nav_CallbackTool();
 
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='ctl00_content_main_CallbacksGridView']/tbody/tr[1]/th[7]/a"))).Text;
             Assert.IsTrue(pageSource.Contains("DSS Call Back Time"));
-            test.Log(Status.Info, "Overnight Call Backs Page found");
+            test.Log(LogStatus.Info, "Overnight Call Backs Page found");
             driver.Close();
         }
 
@@ -87,14 +83,14 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void OpenSample_Live ()
         {
-            test = test.CreateNode("Management > Open Sample Records > Live");
+            test = report.StartTest("Management > Open Sample Records > Live");
             icatiDo.iCati_Login();
             icatiDo.Nav_OpenSampleLive();
 
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[2]/form/table/tbody/tr[1]/th"))).Text;
             Assert.IsTrue(pageSource.Contains("Open Sample (Checked Out)"));
-            test.Log(Status.Info, "Open Sample Live Page found");
+            test.Log(LogStatus.Info, "Open Sample Live Page found");
             driver.Close();
         }
 
@@ -103,14 +99,14 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void OpenSample_practice()
         {
-            test = test.CreateNode("Management > Open Sample Records > Practice");
+            test = report.StartTest("Management > Open Sample Records > Practice");
             icatiDo.iCati_Login();
             icatiDo.Nav_OpenSamplePractice();
 
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[2]/form/table/tbody/tr[1]/th"))).Text;
             Assert.IsTrue(pageSource.Contains("Open Practice Sample (Checked Out)"));
-            test.Log(Status.Info, "Open Sample Practice Page found");
+            test.Log(LogStatus.Info, "Open Sample Practice Page found");
             driver.Close();
 
         }
@@ -119,13 +115,13 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void SearchRecordings()
         {
-            test = test.CreateNode("Management > Search Recordings");
+            test = report.StartTest("Management > Search Recordings");
             icatiDo.iCati_Login();
             icatiDo.Nav_SearchRecordings();
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='navbar-fixed-top']/table/tbody/tr[1]/td[2]/span"))).Text;
             Assert.IsTrue(pageSource.Contains("Find Recordings"), pageSource + " Was found instead");
-            test.Log(Status.Info, "Search Recordings Page found");
+            test.Log(LogStatus.Info, "Search Recordings Page found");
             driver.Close();
         }
 
@@ -134,13 +130,13 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void ExamineSysErrors()
         {
-            test = test.CreateNode("Management > Examine System Errors");
+            test = report.StartTest("Management > Examine System Errors");
             icatiDo.iCati_Login();
             icatiDo.Nav_ExamineSysErrors();
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[2]/form[1]/table/tbody/tr[1]/th[2]"))).Text;
             Assert.IsTrue(pageSource.Contains("Filter"));
-            test.Log(Status.Info, "Examine System Errors Page found");
+            test.Log(LogStatus.Info, "Examine System Errors Page found");
             driver.Close();
         }
 
@@ -149,13 +145,13 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void Remove_Dispositions()
         {
-            test = test.CreateNode("Management > Review Remove Disp List");
+            test = report.StartTest("Management > Review Remove Disp List");
             icatiDo.iCati_Login();
             icatiDo.Nav_Review_Dispositions();
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='ctl00_content_main_Label6']"))).Text;
             Assert.IsTrue(pageSource.Contains("Remove From List"), pageSource + " Was found Instead" );
-            test.Log(Status.Info, "Review 'Remove From List' Dispositions Page found");
+            test.Log(LogStatus.Info, "Review 'Remove From List' Dispositions Page found");
             driver.Close();
 
             //*[@id="ctl00_content_main_Label6"]
@@ -166,14 +162,14 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void qa_callback()
         {
-            test = test.CreateNode("Management > QA > QA Callback");
+            test = report.StartTest("Management > QA > QA Callback");
             icatiDo.iCati_Login();
             icatiDo.Nav_QAcallback();
 
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='ctl00_content_main_content_setup']/center/table/tbody/tr[1]/th[2]"))).Text;
             Assert.IsTrue(pageSource.Contains("Dial"));
-            test.Log(Status.Info, "QA Call back Page found");
+            test.Log(LogStatus.Info, "QA Call back Page found");
             driver.Close();
         }
  
@@ -182,14 +178,14 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void qa_Management()
         {
-            test = test.CreateNode("Management > QA > QA management");
+            test = report.StartTest("Management > QA > QA management");
             icatiDo.iCati_Login();
             icatiDo.Nav_QAMgmt();
 
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='ctl00_content_main_paramtab']/table/tbody/tr/td[1]"))).Text;
             Assert.IsTrue(pageSource.Contains("Filter Parameters"));
-            test.Log(Status.Info, "QA Management Page found");
+            test.Log(LogStatus.Info, "QA Management Page found");
             driver.Close();
         }
 
@@ -198,24 +194,83 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void qa_qualityAssurance()
         {
-            test = test.CreateNode("Management > QA > Quality Assurance");
+            test = report.StartTest("Management > QA > Quality Assurance");
             icatiDo.iCati_Login();
             icatiDo.Nav_QA_QA();
             //Assert
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='aspnetForm']/table/tbody/tr[1]/td[1]"))).Text;
             Assert.IsTrue(pageSource.Contains("Interviewer"));
-            test.Log(Status.Info, "QA Page found");
+            test.Log(LogStatus.Info, "QA Page found");
             driver.Close();
 
         }
 
+        //Management > QA > Reports > Project
+        [Test]
+        [Category("icatiSmokeTest")]
+        public void qa_reports_project()
+        {
+            test = report.StartTest("Management > QA >Reports > Project");
+            icatiDo.iCati_Login();
+            icatiDo.Nav_qa_reports();
+            //Assert
+            var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='ctl00_content_main_div1']/div"))).Text;
+            Assert.IsTrue(pageSource.Contains("This table shows the same columns as in the previous column, except that the results have been grouped by vendor"));
+            test.Log(LogStatus.Info, "QA Project Reports page found");
+            driver.Close();
+        }
+
+        //Management > QA > Reports > Interviewer
+        [Test]
+        [Category("icatiSmokeTest")]
+        public void qa_reports_project_Interviewer ()
+        {
+            test = report.StartTest("Management > QA >Reports > Interviewer");
+            icatiDo.iCati_Login();
+            icatiDo.Nav_qa_reports_Interviewer();
+            //Assert
+            var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='ctl00_content_main_divFilter']/table/tbody/tr[3]/td[1]"))).Text;
+            Assert.IsTrue(pageSource.Contains("Scorecard"), pageSource + " Was found");
+            test.Log(LogStatus.Info, "QA Reports Interviewer page found");
+            driver.Close();
+        }
+
+        //Management > QA > Reports > Reviews
+        [Test]
+        [Category("icatiSmokeTest")]
+        public void qa_reports_project_Reviews ()
+        {
+            test = report.StartTest("Management > QA >Reports > Reviews");
+            icatiDo.iCati_Login();
+            icatiDo.Nav_qa_reports_Reviews();
+            //Assert
+            var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='ctl00_content_main_divFilter']/table/tbody/tr[3]/td[1]"))).Text;
+            Assert.IsTrue(pageSource.Contains("Interviewer"), pageSource + " was found");
+            test.Log(LogStatus.Info, "QA Reports Review page found");
+            driver.Close();
+        }
+
+        //Management > QA > Reports > Vendor
+        [Test]
+        [Category("icatiSmokeTest")]
+        public void qa_reports_project_vendor()
+        {
+            test = report.StartTest("Management > QA >Reports > Vendor");
+            icatiDo.iCati_Login();
+            icatiDo.Nav_qa_reports_vendor();
+            //Assert
+            var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='ctl00_content_main_divFilter']/table/tbody/tr[1]/td[1]"))).Text;
+            Assert.IsTrue(pageSource.Contains("Vendor"), pageSource + " was found");
+            test.Log(LogStatus.Info, "QA Reports Review page found");
+            driver.Close();
+        }
 
         //Management > Search Internet Surveys
         [Test]
         [Category("icatiSmokeTest")]
         public void search_isurvey()
         {
-            test = test.CreateNode("Management > Search Internet Surveys");
+            test = report.StartTest("Management > Search Internet Surveys");
             icatiDo.iCati_Login();
             icatiDo.Nav_search_isurvey();
             wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='criteria']"))).SendKeys("118230827");
@@ -224,7 +279,7 @@ namespace DssSmokeTest.iCati_Tests
 
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[2]/p/span"))).Text;
             Assert.IsTrue(pageSource.Contains("Internet Survey Search"), pageSource + " Was found");
-            test.Log(Status.Info, "Internet survey Search found");
+            test.Log(LogStatus.Info, "Internet survey Search found");
 
             driver.Close();
         }
@@ -234,13 +289,13 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void search_survey_new()
         {
-            test = test.CreateNode("Management > Search Survey New");
+            test = report.StartTest("Management > Search Survey New");
             icatiDo.iCati_Login();
             icatiDo.Nav_search_surveys();
 
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//form[@id='indexForm']/div/div[1]/p"))).Text;
             Assert.IsTrue(pageSource.Contains("Sign in to your account"), pageSource + " Was found");
-            test.Log(Status.Info, "icati Phone login found");
+            test.Log(LogStatus.Info, "icati Phone login found");
 
             driver.Close();
         }
@@ -250,14 +305,14 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void vendor_users()
         {
-            test = test.CreateNode("Vendor Users");
+            test = report.StartTest("Vendor Users");
             icatiDo.iCati_Login();
             icatiDo.Nav_Vendor();
             wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText("Users"))).Click();
 
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[2]/table/tbody/tr[1]/td/form/table/tbody/tr[1]/td[1]"))).Text;
             Assert.IsTrue(pageSource.Contains("Users Located at DSS Research"), pageSource + " Was found");
-            test.Log(Status.Info, "Vendor Users page found");
+            test.Log(LogStatus.Info, "Vendor Users page found");
 
             driver.Close();
         }
@@ -267,46 +322,46 @@ namespace DssSmokeTest.iCati_Tests
         [Category("icatiSmokeTest")]
         public void vendor_assign_study ()
         {
-            test = test.CreateNode("Vendor > Assign Study/Groups");
+            test = report.StartTest("Vendor > Assign Study/Groups");
             icatiDo.iCati_Login();
             icatiDo.Nav_Vendor();
             wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText("Assign Study/Groups"))).Click();
 
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[2]/form/table/tbody/tr/td[3]/table/tbody/tr[1]/th"))).Text;
             Assert.IsTrue(pageSource.Contains("Studies/Groups"), pageSource + " Was found");
-            test.Log(Status.Info, "Vendor Assign Study/Groups page found");
+            test.Log(LogStatus.Info, "Vendor Assign Study/Groups page found");
 
             driver.Close();
         }
 
-        //Management > Monitor > Single call Monitor test
+        //Management > Monitor > Single call Monitor Report
         [Test]
         [Category("icatiSmokeTest")]
         public void Monitor_single()
         {
-            test = test.CreateNode("Management > Monitor > Single");
+            test = report.StartTest("Management > Monitor > Single");
             icatiDo.iCati_Login();
             icatiDo.Nav_Monitor_single();
 
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[2]/form[1]/table/tbody/tr[1]/th"))).Text;
-            Assert.IsTrue(pageSource.Contains("Call Monitor testing"), pageSource + " Was found");
-            test.Log(Status.Info, "Single Call Monitor testing page found");
+            Assert.IsTrue(pageSource.Contains("Call Monitor Reporting"), pageSource + " Was found");
+            test.Log(LogStatus.Info, "Single Call Monitor Reporting page found");
 
             driver.Close();
         }
 
-        //Management > Monitor > Bach call Monitor tests
+        //Management > Monitor > Bach call Monitor Reports
         [Test]
         [Category("icatiSmokeTest")]
         public void Monitor_Batch()
         {
-            test = test.CreateNode("Management > Monitor > Batch");
+            test = report.StartTest("Management > Monitor > Batch");
             icatiDo.iCati_Login();
             icatiDo.Nav_Monitor_batch();
 
             var pageSource = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[2]/menu/li[1]"))).Text;
-            Assert.IsTrue(pageSource.Contains("Select the Interviewers you wish to print Call Monitor tests for."), pageSource + " Was found");
-            test.Log(Status.Info, "Batch Call Monitor testing page found");
+            Assert.IsTrue(pageSource.Contains("Select the Interviewers you wish to print Call Monitor Reports for."), pageSource + " Was found");
+            test.Log(LogStatus.Info, "Batch Call Monitor Reporting page found");
 
             driver.Close();
         }
@@ -319,21 +374,21 @@ namespace DssSmokeTest.iCati_Tests
                 ? ""
                 : string.Format("<pre>{0}</pre>", TestContext.CurrentContext.Result.Message);
 
-            Status Status;
+            LogStatus logstatus;
 
             switch (status)
             {
                 case TestStatus.Failed:
-                    Status = Status.Fail;
+                    logstatus = LogStatus.Fail;
                     break;
                 case TestStatus.Inconclusive:
-                    Status = Status.Warning;
+                    logstatus = LogStatus.Warning;
                     break;
                 case TestStatus.Skipped:
-                    Status = Status.Skip;
+                    logstatus = LogStatus.Skip;
                     break;
                 default:
-                    Status = Status.Pass;
+                    logstatus = LogStatus.Pass;
                     break;
             }
 
@@ -343,8 +398,9 @@ namespace DssSmokeTest.iCati_Tests
                 screenshot.SaveAsFile(@"C:\Automation\Screenshots\" + "Fail" + DateTime.Now.ToString("YYYYddMMHHMMSS"), ScreenshotImageFormat.Png);
             }
 
-            test.Log(Status, "Test ended with " + Status + stacktrace);       
-            extent.Flush();
+            test.Log(logstatus, "Test ended with " + logstatus + stacktrace);
+            report.EndTest(test);
+            report.Flush();
             driver.Quit();
         }
     }
